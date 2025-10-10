@@ -14,7 +14,235 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      appointments: {
+        Row: {
+          appointment_date: string
+          appointment_type: string
+          created_at: string
+          email: string
+          id: string
+          name: string
+          notes: string | null
+          phone: string
+          status: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          appointment_date: string
+          appointment_type: string
+          created_at?: string
+          email: string
+          id?: string
+          name: string
+          notes?: string | null
+          phone: string
+          status?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          appointment_date?: string
+          appointment_type?: string
+          created_at?: string
+          email?: string
+          id?: string
+          name?: string
+          notes?: string | null
+          phone?: string
+          status?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      metal_prices: {
+        Row: {
+          currency: string
+          id: string
+          last_updated: string
+          metal_type: string
+          price_per_gram: number
+        }
+        Insert: {
+          currency?: string
+          id?: string
+          last_updated?: string
+          metal_type: string
+          price_per_gram: number
+        }
+        Update: {
+          currency?: string
+          id?: string
+          last_updated?: string
+          metal_type?: string
+          price_per_gram?: number
+        }
+        Relationships: []
+      }
+      product_reviews: {
+        Row: {
+          comment: string
+          created_at: string
+          helpful_count: number | null
+          id: string
+          images: string[] | null
+          product_id: string
+          rating: number
+          title: string
+          updated_at: string
+          user_id: string
+          verified_purchase: boolean | null
+        }
+        Insert: {
+          comment: string
+          created_at?: string
+          helpful_count?: number | null
+          id?: string
+          images?: string[] | null
+          product_id: string
+          rating: number
+          title: string
+          updated_at?: string
+          user_id: string
+          verified_purchase?: boolean | null
+        }
+        Update: {
+          comment?: string
+          created_at?: string
+          helpful_count?: number | null
+          id?: string
+          images?: string[] | null
+          product_id?: string
+          rating?: number
+          title?: string
+          updated_at?: string
+          user_id?: string
+          verified_purchase?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_reviews_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      products: {
+        Row: {
+          badge: string | null
+          category: string
+          clarity: string | null
+          created_at: string
+          description: string | null
+          featured: boolean | null
+          gem_type: string | null
+          id: string
+          image: string
+          images: string[] | null
+          metal_purity: string | null
+          name: string
+          price: number
+          stock: number | null
+          updated_at: string
+          weight: number | null
+        }
+        Insert: {
+          badge?: string | null
+          category: string
+          clarity?: string | null
+          created_at?: string
+          description?: string | null
+          featured?: boolean | null
+          gem_type?: string | null
+          id?: string
+          image: string
+          images?: string[] | null
+          metal_purity?: string | null
+          name: string
+          price: number
+          stock?: number | null
+          updated_at?: string
+          weight?: number | null
+        }
+        Update: {
+          badge?: string | null
+          category?: string
+          clarity?: string | null
+          created_at?: string
+          description?: string | null
+          featured?: boolean | null
+          gem_type?: string | null
+          id?: string
+          image?: string
+          images?: string[] | null
+          metal_purity?: string | null
+          name?: string
+          price?: number
+          stock?: number | null
+          updated_at?: string
+          weight?: number | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      wishlists: {
+        Row: {
+          created_at: string
+          id: string
+          product_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          product_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          product_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wishlists_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never

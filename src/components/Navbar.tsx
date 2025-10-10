@@ -7,6 +7,7 @@ import { useWishlist } from "@/hooks/useWishlist";
 import { CartSheet } from "@/components/CartSheet";
 import { CompareSheet } from "@/components/CompareProducts";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { CurrencySelector } from "@/components/MultiCurrency";
 
 const Navbar = () => {
   const location = useLocation();
@@ -24,11 +25,13 @@ const Navbar = () => {
   }, [location.pathname]);
 
   const navLinks = [
+    { name: "Home", path: "/" },
+    { name: "Visual Search", path: "/visual-search" },
+    { name: "Rewards", path: "/loyalty" },
     { name: "Gold", path: "/gold" },
     { name: "Silver", path: "/silver" },
     { name: "Diamond", path: "/diamond" },
     { name: "Gems", path: "/gems" },
-    { name: "Wishlist", path: "/wishlist" },
     { name: "About", path: "/about" },
     { name: "Contact", path: "/contact" },
   ];
@@ -75,6 +78,7 @@ const Navbar = () => {
 
           {/* Actions */}
           <div className="flex items-center space-x-3">
+            <CurrencySelector />
             <ThemeToggle />
             <Button variant="ghost" size="icon" className="relative hover:scale-110 transition-transform" asChild>
               <Link to="/wishlist">

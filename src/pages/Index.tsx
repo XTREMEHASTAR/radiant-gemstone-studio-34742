@@ -8,6 +8,9 @@ import { Newsletter } from "@/components/Newsletter";
 import { FeaturedSection } from "@/components/FeaturedSection";
 import { StatsSection } from "@/components/StatsSection";
 import { CategoryShowcase } from "@/components/CategoryShowcase";
+import { FeaturesShowcase } from "@/components/FeaturesShowcase";
+import { LiveMetalRates } from "@/components/LiveMetalRates";
+import { RecentlyViewed } from "@/components/RecentlyViewed";
 
 const Index = () => {
   // Main homepage component
@@ -227,7 +230,20 @@ const Index = () => {
 
         <FeaturedSection />
         <StatsSection />
+        
+        {/* Live Metal Rates */}
+        <section id="rates" className="container mx-auto px-4 py-12">
+          <LiveMetalRates />
+        </section>
+        
+        {/* Advanced Features */}
+        <FeaturesShowcase />
+        
         <CategoryShowcase />
+        
+        {/* Recently Viewed */}
+        <RecentlyViewed />
+        
         <Testimonials />
         <Newsletter />
       </div>

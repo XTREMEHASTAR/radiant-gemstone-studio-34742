@@ -9,7 +9,7 @@ import { useWishlist } from "@/hooks/useWishlist";
 import { useCart } from "@/hooks/useCart";
 import { useCompare } from "@/components/CompareProducts";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CustomerReviews } from "@/components/CustomerReviews";
 import { RelatedProducts } from "@/components/RelatedProducts";
 import { ImageZoom } from "@/components/ImageZoom";
@@ -18,6 +18,8 @@ import { Product3DViewer } from "@/components/Product3DViewer";
 import { CustomDesignStudio } from "@/components/CustomDesignStudio";
 import { VirtualTryOn } from "@/components/VirtualTryOn";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SmartReviews } from "@/components/SmartReviews";
+import { trackProductView } from "@/components/RecentlyViewed";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -28,6 +30,13 @@ const ProductDetail = () => {
   const product = id ? getProductById(id) : null;
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
+
+  useEffect(() => {
+    // Track product view
+    if (product) {
+      trackProductView(product.id);
+    }
+  }, [product]);
 
   if (!product) {
     return (
@@ -257,37 +266,66 @@ const ProductDetail = () => {
 
         {/* Advanced Features Tabs */}
         <div className="max-w-6xl mx-auto mt-12">
-          <Tabs defaultValue="3d" className="w-full">
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="3d">3D View</TabsTrigger>
-              <TabsTrigger value="tryon">Virtual Try-On</TabsTrigger>
-              <TabsTrigger value="custom">Custom Design</TabsTrigger>
-              <TabsTrigger value="reviews">Reviews</TabsTrigger>
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-serif font-bold mb-2">Experience Advanced Features</h2>
+            <p className="text-muted-foreground">Try our cutting-edge shopping technology</p>
+          </div>
+          
+          <Tabs defaultValue="tryon" className="w-full">
+            <TabsList className="grid w-full grid-cols-4 h-auto p-2">
+              <TabsTrigger value="tryon" className="flex-col h-auto py-3 gap-1">
+                <span className="text-2xl">📸</span>
+                <span className="text-sm font-medium">Virtual Try-On</span>
+              </TabsTrigger>
+              <TabsTrigger value="custom" className="flex-col h-auto py-3 gap-1">
+                <span className="text-2xl">🎨</span>
+                <span className="text-sm font-medium">Custom Design</span>
+              </TabsTrigger>
+              <TabsTrigger value="3d" className="flex-col h-auto py-3 gap-1">
+                <span className="text-2xl">🔄</span>
+                <span className="text-sm font-medium">360° View</span>
+              </TabsTrigger>
+              <TabsTrigger value="reviews" className="flex-col h-auto py-3 gap-1">
+                <span className="text-2xl">⭐</span>
+                <span className="text-sm font-medium">Reviews</span>
+              </TabsTrigger>
             </TabsList>
+            
+            <TabsContent value="tryon" className="mt-6">
+              <div className="p-6 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-2xl border-2 border-primary/20">
+                <div className="text-center mb-6">
+                  <h3 className="text-2xl font-serif font-bold mb-2">Try Before You Buy</h3>
+                  <p className="text-muted-foreground">Upload your photo or use your camera to see how this piece looks on you</p>
+                </div>
+                <VirtualTryOn 
+                  productImage={product.image}
+                  productName={product.name}
+                />
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="custom" className="mt-6">
+              <div className="p-6 bg-gradient-to-br from-pink-500/10 to-orange-500/10 rounded-2xl border-2 border-primary/20">
+                <div className="text-center mb-6">
+                  <h3 className="text-2xl font-serif font-bold mb-2">Design Your Own</h3>
+                  <p className="text-muted-foreground">Customize every detail to create your perfect piece</p>
+                </div>
+                <CustomDesignStudio 
+                  baseProduct={{
+                    id: product.id,
+                    name: product.name,
+                    category: product.category
+                  }}
+                />
+              </div>
+            </TabsContent>
             
             <TabsContent value="3d" className="mt-6">
               <Product3DViewer productName={product.name} />
             </TabsContent>
             
-            <TabsContent value="tryon" className="mt-6">
-              <VirtualTryOn 
-                productImage={product.image}
-                productName={product.name}
-              />
-            </TabsContent>
-            
-            <TabsContent value="custom" className="mt-6">
-              <CustomDesignStudio 
-                baseProduct={{
-                  id: product.id,
-                  name: product.name,
-                  category: product.category
-                }}
-              />
-            </TabsContent>
-            
             <TabsContent value="reviews" className="mt-6">
-              <CustomerReviews />
+              <SmartReviews productId={product.id} />
             </TabsContent>
           </Tabs>
         </div>

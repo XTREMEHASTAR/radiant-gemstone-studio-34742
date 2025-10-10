@@ -16,33 +16,42 @@ import Contact from "./pages/Contact";
 import Cart from "./pages/Cart";
 import NotFound from "./pages/NotFound";
 import Layout from "./components/Layout";
+import Loyalty from "./pages/Loyalty";
+import VisualSearchPage from "./pages/VisualSearchPage";
+import Account from "./pages/Account";
+import { CurrencyProvider } from "./components/MultiCurrency";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route element={<Layout />}>
-            <Route path="/" element={<Index />} />
-            <Route path="/gold" element={<Gold />} />
-            <Route path="/silver" element={<Silver />} />
-            <Route path="/diamond" element={<Diamond />} />
-            <Route path="/gems" element={<Gems />} />
-            <Route path="/wishlist" element={<Wishlist />} />
-            <Route path="/product/:id" element={<ProductDetail />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/cart" element={<Cart />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Route>
-        </Routes>
-        <AIShoppingAssistant />
-      </BrowserRouter>
+      <CurrencyProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route element={<Layout />}>
+              <Route path="/" element={<Index />} />
+              <Route path="/gold" element={<Gold />} />
+              <Route path="/silver" element={<Silver />} />
+              <Route path="/diamond" element={<Diamond />} />
+              <Route path="/gems" element={<Gems />} />
+              <Route path="/wishlist" element={<Wishlist />} />
+              <Route path="/product/:id" element={<ProductDetail />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/loyalty" element={<Loyalty />} />
+              <Route path="/visual-search" element={<VisualSearchPage />} />
+              <Route path="/account" element={<Account />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Route>
+          </Routes>
+          <AIShoppingAssistant />
+        </BrowserRouter>
+      </CurrencyProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );

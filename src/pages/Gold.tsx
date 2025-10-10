@@ -2,9 +2,10 @@ import { motion } from "framer-motion";
 import ProductCard from "@/components/ProductCard";
 import { getProductsByCategory, getRandomProduct } from "@/data/products";
 import { useState } from "react";
-import { Sparkles } from "lucide-react";
+import { Sparkles, TrendingUp, Crown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FilterBar } from "@/components/FilterBar";
+import { LiveMetalRates } from "@/components/LiveMetalRates";
 
 const Gold = () => {
   const allProducts = getProductsByCategory('gold');
@@ -79,25 +80,28 @@ const Gold = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-yellow-900/20 to-black">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-amber-100 dark:from-gray-900 dark:via-yellow-900/10 dark:to-gray-900">
       {/* Hero Section with Golden Theme */}
-      <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 luxury-gradient opacity-40" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black" />
+      <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-amber-500 via-yellow-500 to-amber-600">
+        <div className="absolute inset-0">
+          {/* Glossy sphere effect */}
+          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full bg-gradient-radial from-white/40 to-transparent blur-3xl" />
+          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-64 h-64 rounded-full bg-gradient-radial from-white/60 to-transparent blur-2xl" />
+        </div>
         
         {/* Animated golden particles */}
         <div className="absolute inset-0 overflow-hidden">
           {[...Array(30)].map((_, i) => (
             <motion.div
               key={i}
-              className="absolute w-1 h-1 bg-primary rounded-full"
+              className="absolute w-2 h-2 bg-white/40 rounded-full blur-sm"
               initial={{ 
-                x: Math.random() * window.innerWidth,
+                x: Math.random() * 100 + '%',
                 y: -20,
                 opacity: 0 
               }}
               animate={{
-                y: window.innerHeight + 20,
+                y: '100vh',
                 opacity: [0, 1, 0],
               }}
               transition={{
@@ -115,79 +119,120 @@ const Gold = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="text-6xl md:text-7xl font-serif font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-yellow-200 drop-shadow-lg">
+            <motion.div
+              className="w-32 h-32 mx-auto mb-8"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            >
+              <div className="w-full h-full rounded-full bg-gradient-radial from-white/50 to-white/10 backdrop-blur-xl shadow-2xl flex items-center justify-center">
+                <Crown className="w-16 h-16 text-amber-100" />
+              </div>
+            </motion.div>
+
+            <h1 className="text-6xl md:text-8xl font-serif font-bold mb-6 text-white drop-shadow-2xl">
               Gold Collection
             </h1>
-            <p className="text-xl text-yellow-100/80 max-w-2xl mx-auto font-light tracking-wide">
+            <p className="text-2xl text-white/90 max-w-2xl mx-auto font-light tracking-wide mb-8 drop-shadow-lg">
               Rich Golden Luxury — Timeless Treasures in Pure Gold
             </p>
             
-            {/* Glowing border decoration */}
             <motion.div
               animate={{ 
                 boxShadow: [
-                  "0 0 20px rgba(251, 191, 36, 0.3)",
-                  "0 0 40px rgba(251, 191, 36, 0.6)",
-                  "0 0 20px rgba(251, 191, 36, 0.3)",
+                  "0 0 30px rgba(255, 255, 255, 0.3)",
+                  "0 0 60px rgba(255, 255, 255, 0.6)",
+                  "0 0 30px rgba(255, 255, 255, 0.3)",
                 ]
               }}
               transition={{ duration: 2, repeat: Infinity }}
-              className="w-32 h-1 luxury-gradient mx-auto mt-6 rounded-full"
+              className="w-40 h-1 bg-white/80 mx-auto rounded-full"
             />
           </motion.div>
         </div>
       </section>
 
-      {/* Products Section */}
-      <section className="container mx-auto px-4 py-16">
-        <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
-          <div>
-            <h2 className="text-3xl font-serif font-bold text-white mb-2">
-              Explore Our Gold Jewelry
-            </h2>
-            <p className="text-yellow-100/60">
-              {filteredProducts.length} of {allProducts.length} pieces
-            </p>
-          </div>
-          
-          <Button
-            onClick={highlightRandom}
-            className="luxury-gradient hover:glow-gold transition-all duration-300 text-white font-semibold px-6 py-3 rounded-full shadow-xl"
+      <div className="container mx-auto px-4">
+        {/* Live Metal Rates */}
+        <section className="py-12 -mt-16 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
           >
-            <Sparkles className="mr-2 h-4 w-4" />
-            Highlight Random Product
-          </Button>
-        </div>
+            <LiveMetalRates />
+          </motion.div>
+        </section>
 
-        {/* Filter Bar */}
-        <FilterBar
-          onSearchChange={handleSearchChange}
-          onSortChange={handleSortChange}
-          onPriceRangeChange={handlePriceRangeChange}
-          priceRange={priceRange}
-          maxPrice={maxPrice}
-        />
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProducts.map((product, index) => (
-            <motion.div
-              key={product.id}
-              className={`${
-                highlightedProduct === product.id
-                  ? "ring-4 ring-primary ring-offset-4 ring-offset-black rounded-2xl glow-gold"
-                  : ""
-              } transition-all duration-500`}
+        {/* Products Section */}
+        <section className="py-12">
+          <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
+            <div>
+              <h2 className="text-3xl font-serif font-bold mb-2">
+                Explore Our Gold Jewelry
+              </h2>
+              <p className="text-muted-foreground flex items-center gap-2">
+                <TrendingUp className="h-4 w-4" />
+                {filteredProducts.length} of {allProducts.length} pieces available
+              </p>
+            </div>
+            
+            <Button
+              onClick={highlightRandom}
+              variant="outline"
+              className="gap-2 border-amber-500/50 hover:bg-amber-500/10"
             >
-              <ProductCard {...product} index={index} />
-            </motion.div>
-          ))}
-        </div>
-      </section>
+              <Sparkles className="h-4 w-4" />
+              Surprise Me
+            </Button>
+          </div>
+
+          {/* Filter Bar */}
+          <FilterBar
+            onSearchChange={handleSearchChange}
+            onSortChange={handleSortChange}
+            onPriceRangeChange={handlePriceRangeChange}
+            priceRange={priceRange}
+            maxPrice={maxPrice}
+          />
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+            {filteredProducts.map((product, index) => (
+              <motion.div
+                key={product.id}
+                className={`${
+                  highlightedProduct === product.id
+                    ? "ring-4 ring-primary shadow-[0_0_50px_rgba(251,191,36,0.6)]"
+                    : ""
+                } rounded-2xl transition-all duration-500`}
+              >
+                <ProductCard {...product} index={index} />
+              </motion.div>
+            ))}
+          </div>
+
+          {filteredProducts.length === 0 && (
+            <div className="text-center py-16">
+              <p className="text-2xl text-muted-foreground">No products match your filters</p>
+              <Button onClick={() => {
+                setSearchTerm('');
+                setPriceRange([0, maxPrice]);
+                setSortBy('featured');
+              }} className="mt-4">
+                Clear Filters
+              </Button>
+            </div>
+          )}
+        </section>
+      </div>
 
       {/* Footer with Gold Theme */}
-      <div className="border-t border-primary/20 bg-gradient-to-r from-yellow-900/10 via-yellow-800/10 to-yellow-900/10 py-8">
-        <div className="container mx-auto px-4 text-center text-yellow-100/60">
-          <p className="text-sm">Crafted with precision • Certified authenticity • Lifetime warranty</p>
+      <div className="border-t border-amber-500/20 bg-gradient-to-r from-amber-500/5 via-yellow-500/5 to-amber-500/5 py-8 mt-12">
+        <div className="container mx-auto px-4 text-center text-muted-foreground">
+          <p className="text-sm flex items-center justify-center gap-2">
+            <Sparkles className="h-4 w-4 text-amber-500" />
+            Certified Authenticity • Lifetime Warranty • Free Shipping
+            <Sparkles className="h-4 w-4 text-amber-500" />
+          </p>
         </div>
       </div>
     </div>
