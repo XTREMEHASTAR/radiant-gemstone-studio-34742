@@ -1,0 +1,195 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 30 20% 98%;
+    --foreground: 25 15% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 25 15% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 25 15% 15%;
+
+    /* Luxury Gold Primary */
+    --primary: 43 74% 49%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 43 90% 65%;
+
+    /* Silver Secondary */
+    --secondary: 0 0% 75%;
+    --secondary-foreground: 25 15% 15%;
+
+    /* Diamond Accent */
+    --accent: 210 100% 95%;
+    --accent-foreground: 210 100% 25%;
+
+    /* Gems Vibrant */
+    --gems: 280 70% 60%;
+    --gems-foreground: 0 0% 100%;
+
+    --muted: 30 20% 92%;
+    --muted-foreground: 25 10% 45%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 30 15% 88%;
+    --input: 30 15% 90%;
+    --ring: 43 74% 49%;
+
+    --radius: 0.75rem;
+
+    /* Luxury Gradients */
+    --gradient-gold: linear-gradient(135deg, hsl(43, 74%, 49%) 0%, hsl(35, 85%, 40%) 50%, hsl(43, 90%, 65%) 100%);
+    --gradient-silver: linear-gradient(135deg, hsl(0, 0%, 75%) 0%, hsl(210, 10%, 85%) 50%, hsl(0, 0%, 90%) 100%);
+    --gradient-diamond: linear-gradient(135deg, hsl(210, 100%, 98%) 0%, hsl(200, 90%, 95%) 50%, hsl(220, 100%, 98%) 100%);
+    --gradient-gems: linear-gradient(135deg, hsl(280, 70%, 60%) 0%, hsl(320, 70%, 65%) 25%, hsl(340, 80%, 60%) 50%, hsl(280, 75%, 70%) 75%, hsl(260, 70%, 65%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(25, 30%, 15%) 0%, hsl(35, 40%, 25%) 50%, hsl(25, 30%, 15%) 100%);
+    
+    /* Elegant Shadows */
+    --shadow-luxury: 0 10px 40px -10px hsl(43 74% 49% / 0.3);
+    --shadow-card: 0 4px 20px -4px hsl(25 15% 15% / 0.1);
+    --shadow-glow-gold: 0 0 40px hsl(43 90% 65% / 0.6), 0 0 80px hsl(43 90% 65% / 0.3);
+    --shadow-glow-diamond: 0 0 40px hsl(210 100% 95% / 0.7), 0 0 80px hsl(200 100% 90% / 0.4);
+    --shadow-glow-gems: 0 0 40px hsl(280 70% 60% / 0.6), 0 0 80px hsl(320 70% 65% / 0.4);
+    
+    /* Premium Animations */
+    --transition-luxury: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .dark {
+    --background: 25 25% 8%;
+    --foreground: 30 10% 95%;
+
+    --card: 25 20% 12%;
+    --card-foreground: 30 10% 95%;
+
+    --popover: 25 20% 12%;
+    --popover-foreground: 30 10% 95%;
+
+    --primary: 43 74% 55%;
+    --primary-foreground: 25 25% 8%;
+    --primary-glow: 43 90% 70%;
+
+    --secondary: 0 0% 35%;
+    --secondary-foreground: 30 10% 95%;
+
+    --accent: 210 80% 20%;
+    --accent-foreground: 210 100% 95%;
+
+    --gems: 280 70% 65%;
+    --gems-foreground: 0 0% 100%;
+
+    --muted: 25 15% 18%;
+    --muted-foreground: 30 10% 65%;
+
+    --destructive: 0 62.8% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 25 15% 22%;
+    --input: 25 15% 20%;
+    --ring: 43 74% 55%;
+
+    --shadow-luxury: 0 10px 40px -10px hsl(43 74% 55% / 0.4);
+    --shadow-card: 0 4px 20px -4px hsl(0 0% 0% / 0.3);
+    --shadow-glow-gold: 0 0 30px hsl(43 90% 70% / 0.4);
+    --shadow-glow-diamond: 0 0 30px hsl(210 100% 95% / 0.4);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+}
+
+@layer utilities {
+  .luxury-gradient {
+    background: var(--gradient-gold);
+  }
+  
+  .silver-gradient {
+    background: var(--gradient-silver);
+  }
+  
+  .diamond-gradient {
+    background: var(--gradient-diamond);
+  }
+  
+  .gems-gradient {
+    background: var(--gradient-gems);
+  }
+
+  .hero-gradient {
+    background: var(--gradient-hero);
+  }
+
+  .text-gradient-gold {
+    @apply bg-gradient-to-r from-primary via-primary-glow to-primary bg-clip-text text-transparent;
+  }
+
+  .hover-lift {
+    @apply transition-all duration-300 hover:-translate-y-2 hover:shadow-[var(--shadow-luxury)];
+  }
+
+  .hover-tilt {
+    @apply transition-all duration-300 hover:rotate-1 hover:scale-105;
+  }
+
+  .glow-gold {
+    box-shadow: var(--shadow-glow-gold);
+  }
+
+  .glow-diamond {
+    box-shadow: var(--shadow-glow-diamond);
+  }
+
+  .glow-gems {
+    box-shadow: var(--shadow-glow-gems);
+  }
+
+  .glassmorphism {
+    @apply bg-white/10 backdrop-blur-md border border-white/20;
+  }
+
+  .sparkle {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .sparkle::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      45deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
+    animation: sparkle 3s infinite;
+  }
+
+  @keyframes sparkle {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(0deg); }
+    100% { transform: translateX(100%) translateY(100%) rotate(360deg); }
+  }
+}

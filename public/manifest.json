@@ -1,0 +1,22 @@
+{
+  "name": "Bhulaxmi Jewellers",
+  "short_name": "Bhulaxmi",
+  "description": "Premium jewelry collection featuring gold, silver, diamond, and precious gems since 1997",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F5EFE7",
+  "theme_color": "#D4A574",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "any",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["shopping", "lifestyle"],
+  "dir": "ltr",
+  "lang": "en-US",
+  "scope": "/",
+  "prefer_related_applications": false
+}
