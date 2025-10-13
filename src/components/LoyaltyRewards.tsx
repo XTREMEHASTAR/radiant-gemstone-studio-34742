@@ -52,12 +52,11 @@ export const LoyaltyRewards = () => {
         // Create initial loyalty record
         const { data: newData, error: insertError } = await supabase
           .from('loyalty_points')
-          .insert({
+          .insert([{
             user_id: user.id,
             points: 0,
-            total_earned: 0,
             tier: 'bronze',
-          })
+          }])
           .select()
           .single();
 
@@ -105,11 +104,11 @@ export const LoyaltyRewards = () => {
         return;
       }
 
-      const { error } = await supabase.from('referrals').insert({
+      const { error } = await supabase.from('referrals').insert([{
         referrer_id: user.id,
-        referred_email: referralEmail,
+        referee_email: referralEmail,
         status: 'pending',
-      });
+      }]);
 
       if (error) throw error;
 
@@ -141,7 +140,7 @@ export const LoyaltyRewards = () => {
     
     const currentThreshold = TIER_THRESHOLDS[currentTier as keyof typeof TIER_THRESHOLDS];
     const nextThreshold = TIER_THRESHOLDS[nextTier as keyof typeof TIER_THRESHOLDS];
-    const progress = ((loyaltyData.total_earned - currentThreshold) / (nextThreshold - currentThreshold)) * 100;
+    const progress = ((loyaltyData.points - currentThreshold) / (nextThreshold - currentThreshold)) * 100;
     
     return Math.min(100, Math.max(0, progress));
   };
@@ -184,7 +183,7 @@ export const LoyaltyRewards = () => {
           {nextTier && (
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
-                <span>{loyaltyData?.total_earned || 0} points earned</span>
+                <span>{loyaltyData?.points || 0} points earned</span>
                 <span>{TIER_THRESHOLDS[nextTier as keyof typeof TIER_THRESHOLDS]} to {nextTier}</span>
               </div>
               <Progress value={progress} className="h-2" />
@@ -314,12 +313,12 @@ export const LoyaltyRewards = () => {
                   {referrals.map((ref) => (
                     <div key={ref.id} className="flex items-center justify-between p-3 border rounded-lg">
                       <div>
-                        <p className="font-medium">{ref.referred_email}</p>
+                        <p className="font-medium">{ref.referee_email}</p>
                         <p className="text-sm text-muted-foreground">
                           {new Date(ref.created_at).toLocaleDateString()}
                         </p>
                       </div>
-                      <Badge variant={ref.reward_claimed ? "default" : "secondary"}>
+                      <Badge variant={ref.status === 'completed' ? "default" : "secondary"}>
                         {ref.status}
                       </Badge>
                     </div>

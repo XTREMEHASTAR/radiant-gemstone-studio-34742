@@ -56,6 +56,66 @@ export type Database = {
         }
         Relationships: []
       }
+      discount_codes: {
+        Row: {
+          code: string
+          created_at: string
+          discount_percent: number
+          id: string
+          max_uses: number | null
+          min_purchase: number | null
+          used_count: number
+          valid_until: string | null
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          discount_percent: number
+          id?: string
+          max_uses?: number | null
+          min_purchase?: number | null
+          used_count?: number
+          valid_until?: string | null
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          discount_percent?: number
+          id?: string
+          max_uses?: number | null
+          min_purchase?: number | null
+          used_count?: number
+          valid_until?: string | null
+        }
+        Relationships: []
+      }
+      loyalty_points: {
+        Row: {
+          created_at: string
+          id: string
+          points: number
+          tier: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          points?: number
+          tier?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          points?: number
+          tier?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       metal_prices: {
         Row: {
           currency: string
@@ -209,6 +269,111 @@ export type Database = {
           created_at?: string
           display_name?: string | null
           id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      recently_viewed: {
+        Row: {
+          id: string
+          product_id: string
+          user_id: string
+          viewed_at: string
+        }
+        Insert: {
+          id?: string
+          product_id: string
+          user_id: string
+          viewed_at?: string
+        }
+        Update: {
+          id?: string
+          product_id?: string
+          user_id?: string
+          viewed_at?: string
+        }
+        Relationships: []
+      }
+      referrals: {
+        Row: {
+          created_at: string
+          id: string
+          referee_email: string
+          referrer_id: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          referee_email: string
+          referrer_id: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          referee_email?: string
+          referrer_id?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      saved_carts: {
+        Row: {
+          cart_data: Json
+          coupon_code: string | null
+          created_at: string
+          gift_message: string | null
+          gift_wrap: boolean
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          cart_data: Json
+          coupon_code?: string | null
+          created_at?: string
+          gift_message?: string | null
+          gift_wrap?: boolean
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          cart_data?: Json
+          coupon_code?: string | null
+          created_at?: string
+          gift_message?: string | null
+          gift_wrap?: boolean
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_preferences: {
+        Row: {
+          created_at: string
+          currency: string
+          id: string
+          notifications_enabled: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          currency?: string
+          id?: string
+          notifications_enabled?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          currency?: string
+          id?: string
+          notifications_enabled?: boolean
           updated_at?: string
           user_id?: string
         }

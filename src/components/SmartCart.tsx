@@ -21,9 +21,7 @@ export const SmartCart = () => {
   const shipping = subtotal >= 10000 ? 0 : 250;
   const giftWrapFee = giftWrap ? 99 : 0;
   const discount = appliedCoupon 
-    ? appliedCoupon.discount_type === 'percentage'
-      ? (subtotal * appliedCoupon.discount_value) / 100
-      : appliedCoupon.discount_value
+    ? (subtotal * appliedCoupon.discount_percent) / 100
     : 0;
   const total = subtotal + shipping + giftWrapFee - discount;
 
@@ -39,7 +37,6 @@ export const SmartCart = () => {
         .from('discount_codes')
         .select('*')
         .eq('code', couponCode.toUpperCase())
-        .eq('active', true)
         .maybeSingle();
 
       if (error) throw error;
@@ -91,15 +88,13 @@ export const SmartCart = () => {
 
       const { error } = await supabase
         .from('saved_carts')
-        .upsert({
+        .upsert([{
           user_id: user.id,
-          cart_data: {
-            items: cart.items,
-            coupon: appliedCoupon,
-            giftWrap,
-            giftMessage,
-          },
-        });
+          cart_data: cart.items as any,
+          coupon_code: appliedCoupon?.code,
+          gift_wrap: giftWrap,
+          gift_message: giftMessage,
+        }]);
 
       if (error) throw error;
       toast.success('Cart saved!');
@@ -141,9 +136,7 @@ export const SmartCart = () => {
                 <div>
                   <p className="font-medium">{appliedCoupon.code}</p>
                   <p className="text-sm text-muted-foreground">
-                    {appliedCoupon.discount_type === 'percentage'
-                      ? `${appliedCoupon.discount_value}% off`
-                      : `₹${appliedCoupon.discount_value} off`}
+                    {appliedCoupon.discount_percent}% off
                   </p>
                 </div>
               </div>

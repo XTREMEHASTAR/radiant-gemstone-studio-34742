@@ -34,10 +34,10 @@ export const PushNotifications = () => {
         if (user) {
           await supabase
             .from('user_preferences')
-            .upsert({
+            .upsert([{
               user_id: user.id,
-              push_notifications: true,
-            });
+              notifications_enabled: true,
+            }]);
         }
       } else {
         toast.error('Notification permission denied');
@@ -56,10 +56,10 @@ export const PushNotifications = () => {
       if (user) {
         await supabase
           .from('user_preferences')
-          .upsert({
+          .upsert([{
             user_id: user.id,
-            push_notifications: false,
-          });
+            notifications_enabled: false,
+          }]);
       }
       toast.info('Notifications disabled');
     } catch (error) {

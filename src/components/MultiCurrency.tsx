@@ -71,10 +71,10 @@ export const CurrencyProvider = ({ children }: { children: React.ReactNode }) =>
 
       await supabase
         .from('user_preferences')
-        .upsert({
+        .upsert([{
           user_id: user.id,
           currency: code,
-        });
+        }]);
     } catch (error) {
       console.error('Error saving currency:', error);
     }
