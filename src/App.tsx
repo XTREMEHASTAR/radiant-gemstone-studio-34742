@@ -20,6 +20,8 @@ import Loyalty from "./pages/Loyalty";
 import VisualSearchPage from "./pages/VisualSearchPage";
 import Account from "./pages/Account";
 import { CurrencyProvider } from "./components/MultiCurrency";
+import { PrivacyPolicy } from "./components/PrivacyPolicy";
+import { TermsOfService } from "./components/TermsOfService";
 
 const queryClient = new QueryClient();
 
@@ -45,6 +47,8 @@ const App = () => (
               <Route path="/loyalty" element={<Loyalty />} />
               <Route path="/visual-search" element={<VisualSearchPage />} />
               <Route path="/account" element={<Account />} />
+              <Route path="/privacy" element={<PrivacyPolicy />} />
+              <Route path="/terms" element={<TermsOfService />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Route>

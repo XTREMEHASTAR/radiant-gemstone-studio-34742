@@ -63,18 +63,20 @@ const Footer = () => {
           <div>
             <h4 className="font-serif font-semibold mb-4">Support</h4>
             <ul className="space-y-2 text-sm">
-              <li className="text-muted-foreground hover:text-primary transition-colors cursor-pointer">
-                Contact Us
-              </li>
-              <li className="text-muted-foreground hover:text-primary transition-colors cursor-pointer">
-                Shipping & Returns
-              </li>
-              <li className="text-muted-foreground hover:text-primary transition-colors cursor-pointer">
-                Size Guide
-              </li>
-              <li className="text-muted-foreground hover:text-primary transition-colors cursor-pointer">
-                Care Instructions
-              </li>
+              <li><Link to="/contact" className="text-muted-foreground hover:text-primary transition-colors">Contact Us</Link></li>
+              <li><Link to="/contact" className="text-muted-foreground hover:text-primary transition-colors">Shipping & Returns</Link></li>
+              <li className="text-muted-foreground hover:text-primary transition-colors cursor-pointer">Size Guide</li>
+              <li className="text-muted-foreground hover:text-primary transition-colors cursor-pointer">Care Instructions</li>
+            </ul>
+          </div>
+
+          {/* Legal */}
+          <div>
+            <h4 className="font-serif font-semibold mb-4">Legal</h4>
+            <ul className="space-y-2 text-sm">
+              <li><Link to="/privacy" className="text-muted-foreground hover:text-primary transition-colors">Privacy Policy</Link></li>
+              <li><Link to="/terms" className="text-muted-foreground hover:text-primary transition-colors">Terms of Service</Link></li>
+              <li><Link to="/contact" className="text-muted-foreground hover:text-primary transition-colors">Refund Policy</Link></li>
             </ul>
           </div>
 
