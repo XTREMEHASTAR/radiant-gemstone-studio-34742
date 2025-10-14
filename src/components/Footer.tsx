@@ -13,8 +13,8 @@ const Footer = () => {
                 <span className="text-white font-serif font-bold text-xl">BJ</span>
               </div>
               <div>
-                <span className="text-2xl font-serif font-bold block leading-tight">Bhulaxmi</span>
-                <span className="text-xs tracking-wider uppercase opacity-80">Jewellers Pvt Ltd</span>
+                <span className="text-2xl font-serif font-bold block leading-tight">BHU LAXMI JEWELLERS</span>
+                <span className="text-xs tracking-wider uppercase opacity-80">PRIVATE LIMITED</span>
               </div>
             </div>
             <p className="text-sm text-muted-foreground max-w-xs mb-3">
@@ -97,7 +97,7 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="border-t border-border pt-6 flex flex-col md:flex-row justify-between items-center text-sm text-muted-foreground">
-          <p>&copy; 2025 Bhulaxmi Jewellers Pvt Ltd. All rights reserved.</p>
+          <p>&copy; 2025 BHU LAXMI JEWELLERS PRIVATE LIMITED. All rights reserved.</p>
           <div className="flex gap-6 mt-4 md:mt-0">
             <span className="hover:text-primary cursor-pointer transition-colors">Privacy Policy</span>
             <span className="hover:text-primary cursor-pointer transition-colors">Terms of Service</span>
