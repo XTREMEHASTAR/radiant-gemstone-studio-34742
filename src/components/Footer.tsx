@@ -64,9 +64,9 @@ const Footer = () => {
             <h4 className="font-serif font-semibold mb-4">Support</h4>
             <ul className="space-y-2 text-sm">
               <li><Link to="/contact" className="text-muted-foreground hover:text-primary transition-colors">Contact Us</Link></li>
-              <li><Link to="/contact" className="text-muted-foreground hover:text-primary transition-colors">Shipping & Returns</Link></li>
-              <li className="text-muted-foreground hover:text-primary transition-colors cursor-pointer">Size Guide</li>
-              <li className="text-muted-foreground hover:text-primary transition-colors cursor-pointer">Care Instructions</li>
+              <li><Link to="/shipping-returns" className="text-muted-foreground hover:text-primary transition-colors">Shipping & Returns</Link></li>
+              <li><Link to="/size-guide" className="text-muted-foreground hover:text-primary transition-colors">Size Guide</Link></li>
+              <li><Link to="/care-instructions" className="text-muted-foreground hover:text-primary transition-colors">Care Instructions</Link></li>
             </ul>
           </div>
 
@@ -76,7 +76,7 @@ const Footer = () => {
             <ul className="space-y-2 text-sm">
               <li><Link to="/privacy" className="text-muted-foreground hover:text-primary transition-colors">Privacy Policy</Link></li>
               <li><Link to="/terms" className="text-muted-foreground hover:text-primary transition-colors">Terms of Service</Link></li>
-              <li><Link to="/contact" className="text-muted-foreground hover:text-primary transition-colors">Refund Policy</Link></li>
+              <li><Link to="/refund-policy" className="text-muted-foreground hover:text-primary transition-colors">Refund Policy</Link></li>
             </ul>
           </div>
 

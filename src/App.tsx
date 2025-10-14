@@ -15,6 +15,10 @@ import ProductDetail from "./pages/ProductDetail";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Cart from "./pages/Cart";
+import ShippingReturns from "./pages/ShippingReturns";
+import SizeGuide from "./pages/SizeGuide";
+import CareInstructions from "./pages/CareInstructions";
+import RefundPolicy from "./pages/RefundPolicy";
 import NotFound from "./pages/NotFound";
 import Layout from "./components/Layout";
 import Loyalty from "./pages/Loyalty";
@@ -48,6 +52,10 @@ const App = () => (
               <Route path="/loyalty" element={<Loyalty />} />
               <Route path="/visual-search" element={<VisualSearchPage />} />
               <Route path="/account" element={<Account />} />
+              <Route path="/shipping-returns" element={<ShippingReturns />} />
+              <Route path="/size-guide" element={<SizeGuide />} />
+              <Route path="/care-instructions" element={<CareInstructions />} />
+              <Route path="/refund-policy" element={<RefundPolicy />} />
               <Route path="/privacy" element={<PrivacyPolicy />} />
               <Route path="/terms" element={<TermsOfService />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
