@@ -1,20 +1,34 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import ProductCard from "@/components/ProductCard";
-import { getProductsByCategory } from "@/data/products";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FilterBar } from "@/components/FilterBar";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 const Silver = () => {
-  const allProducts = getProductsByCategory('silver');
   const [scrollPosition, setScrollPosition] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("featured");
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 500000]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 50000]);
+
+  // Fetch products from database
+  const { data: allProducts = [], isLoading } = useQuery({
+    queryKey: ['products', 'silver'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('category', 'silver');
+      
+      if (error) throw error;
+      return data;
+    },
+  });
 
   const maxPrice = useMemo(() => 
-    Math.max(...allProducts.map(p => p.price)), 
+    allProducts.length > 0 ? Math.max(...allProducts.map(p => p.price)) : 50000, 
     [allProducts]
   );
 
@@ -49,6 +63,17 @@ const Silver = () => {
       setScrollPosition(newPosition);
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-slate-100 to-gray-200 dark:from-gray-900 dark:via-slate-900 dark:to-gray-800 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-gray-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-xl font-serif">Loading silver collection...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-slate-100 to-gray-200 dark:from-gray-900 dark:via-slate-900 dark:to-gray-800">
@@ -111,7 +136,7 @@ const Silver = () => {
             className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide"
             style={{ scrollbarWidth: 'none' }}
           >
-            {products.map((product, index) => (
+            {products.slice(0, 10).map((product, index) => (
               <motion.div
                 key={product.id}
                 initial={{ opacity: 0, x: 50 }}
@@ -142,6 +167,12 @@ const Silver = () => {
             </motion.div>
           ))}
         </div>
+
+        {products.length === 0 && (
+          <div className="text-center py-16">
+            <p className="text-2xl text-muted-foreground">No products match your filters</p>
+          </div>
+        )}
       </section>
 
       {/* Footer with Silver Theme */}

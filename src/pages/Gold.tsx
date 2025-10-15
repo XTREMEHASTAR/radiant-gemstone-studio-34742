@@ -1,39 +1,52 @@
 import { motion } from "framer-motion";
 import ProductCard from "@/components/ProductCard";
-import { getProductsByCategory, getRandomProduct } from "@/data/products";
 import { useState } from "react";
 import { Sparkles, TrendingUp, Crown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FilterBar } from "@/components/FilterBar";
 import { LiveMetalRates } from "@/components/LiveMetalRates";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 const Gold = () => {
-  const allProducts = getProductsByCategory('gold');
-  const [filteredProducts, setFilteredProducts] = useState(allProducts);
   const [highlightedProduct, setHighlightedProduct] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("featured");
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 100000]);
 
-  const maxPrice = Math.max(...allProducts.map(p => p.price));
+  // Fetch products from database
+  const { data: allProducts = [], isLoading } = useQuery({
+    queryKey: ['products', 'gold'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('category', 'gold');
+      
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const maxPrice = allProducts.length > 0 ? Math.max(...allProducts.map(p => p.price)) : 100000;
 
   const highlightRandom = () => {
-    const randomProduct = getRandomProduct('gold');
-    if (randomProduct) {
+    if (allProducts.length > 0) {
+      const randomProduct = allProducts[Math.floor(Math.random() * allProducts.length)];
       setHighlightedProduct(randomProduct.id);
       setTimeout(() => setHighlightedProduct(null), 3000);
     }
   };
 
   // Filter and sort products
-  const handleFilterAndSort = () => {
+  const filteredProducts = (() => {
     let filtered = [...allProducts];
 
     // Search filter
     if (searchTerm) {
       filtered = filtered.filter(p =>
         p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        p.description.toLowerCase().includes(searchTerm.toLowerCase())
+        (p.description && p.description.toLowerCase().includes(searchTerm.toLowerCase()))
       );
     }
 
@@ -55,36 +68,25 @@ const Gold = () => {
         filtered.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
     }
 
-    setFilteredProducts(filtered);
-  };
+    return filtered;
+  })();
 
-  // Re-filter when dependencies change
-  useState(() => {
-    handleFilterAndSort();
-  });
-
-  // Update when filters change
-  const handleSearchChange = (value: string) => {
-    setSearchTerm(value);
-    setTimeout(handleFilterAndSort, 300);
-  };
-
-  const handleSortChange = (value: string) => {
-    setSortBy(value);
-    handleFilterAndSort();
-  };
-
-  const handlePriceRangeChange = (range: [number, number]) => {
-    setPriceRange(range);
-    handleFilterAndSort();
-  };
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-amber-100 dark:from-gray-900 dark:via-yellow-900/10 dark:to-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <Crown className="w-16 h-16 text-amber-500 animate-pulse mx-auto mb-4" />
+          <p className="text-xl font-serif">Loading gold collection...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-amber-100 dark:from-gray-900 dark:via-yellow-900/10 dark:to-gray-900">
       {/* Hero Section with Golden Theme */}
       <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-amber-500 via-yellow-500 to-amber-600">
         <div className="absolute inset-0">
-          {/* Glossy sphere effect */}
           <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full bg-gradient-radial from-white/40 to-transparent blur-3xl" />
           <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-64 h-64 rounded-full bg-gradient-radial from-white/60 to-transparent blur-2xl" />
         </div>
@@ -188,9 +190,9 @@ const Gold = () => {
 
           {/* Filter Bar */}
           <FilterBar
-            onSearchChange={handleSearchChange}
-            onSortChange={handleSortChange}
-            onPriceRangeChange={handlePriceRangeChange}
+            onSearchChange={setSearchTerm}
+            onSortChange={setSortBy}
+            onPriceRangeChange={setPriceRange}
             priceRange={priceRange}
             maxPrice={maxPrice}
           />

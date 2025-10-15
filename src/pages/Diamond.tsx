@@ -1,7 +1,6 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ProductCard from "@/components/ProductCard";
-import { getProductsByCategory } from "@/data/products";
 import { Sparkles, Filter } from "lucide-react";
 import { FilterBar } from "@/components/FilterBar";
 import {
@@ -11,16 +10,31 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 const Diamond = () => {
-  const baseProducts = getProductsByCategory('diamond');
   const [clarityFilter, setClarityFilter] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("featured");
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000000]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 200000]);
+
+  // Fetch products from database
+  const { data: baseProducts = [], isLoading } = useQuery({
+    queryKey: ['products', 'diamond'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('category', 'diamond');
+      
+      if (error) throw error;
+      return data;
+    },
+  });
 
   const maxPrice = useMemo(() => 
-    Math.max(...baseProducts.map(p => p.price)), 
+    baseProducts.length > 0 ? Math.max(...baseProducts.map(p => p.price)) : 200000, 
     [baseProducts]
   );
 
@@ -48,6 +62,17 @@ const Diamond = () => {
     : allProducts.filter(p => p.clarity === clarityFilter);
 
   const clarityOptions = ['IF', 'VVS1', 'VVS2', 'VS1', 'VS2'];
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-blue-950 dark:via-gray-900 dark:to-blue-950 flex items-center justify-center">
+        <div className="text-center">
+          <Sparkles className="w-16 h-16 text-blue-500 animate-pulse mx-auto mb-4" />
+          <p className="text-xl font-serif">Loading diamond collection...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-blue-950 dark:via-gray-900 dark:to-blue-950 relative overflow-hidden">
@@ -165,7 +190,7 @@ const Diamond = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
           >
             {filteredProducts.map((product, index) => (
               <motion.div
@@ -173,7 +198,6 @@ const Diamond = () => {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
-                className="break-inside-avoid mb-6"
               >
                 <div className="glassmorphism p-1 rounded-2xl glow-diamond">
                   <ProductCard {...product} index={index} />
@@ -189,6 +213,12 @@ const Diamond = () => {
             ))}
           </motion.div>
         </AnimatePresence>
+
+        {filteredProducts.length === 0 && (
+          <div className="text-center py-16">
+            <p className="text-2xl text-muted-foreground">No products match your filters</p>
+          </div>
+        )}
       </section>
 
       {/* Footer with Diamond Theme */}

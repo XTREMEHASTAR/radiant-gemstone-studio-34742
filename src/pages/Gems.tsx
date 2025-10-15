@@ -1,23 +1,37 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ProductCard from "@/components/ProductCard";
-import { getProductsByCategory, getRandomProduct, type Product } from "@/data/products";
 import { Sparkles, Diamond } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { FilterBar } from "@/components/FilterBar";
 import { toast } from "sonner";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 const Gems = () => {
-  const allProducts = getProductsByCategory('gems');
-  const [discoveredGem, setDiscoveredGem] = useState<Product | null>(null);
+  const [discoveredGem, setDiscoveredGem] = useState<any | null>(null);
   const [isDiscovering, setIsDiscovering] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("featured");
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 500000]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 100000]);
+
+  // Fetch products from database
+  const { data: allProducts = [], isLoading } = useQuery({
+    queryKey: ['products', 'gems'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('category', 'gems');
+      
+      if (error) throw error;
+      return data;
+    },
+  });
 
   const maxPrice = useMemo(() => 
-    Math.max(...allProducts.map(p => p.price)), 
+    allProducts.length > 0 ? Math.max(...allProducts.map(p => p.price)) : 100000, 
     [allProducts]
   );
 
@@ -41,14 +55,14 @@ const Gems = () => {
   }, [allProducts, searchTerm, sortBy, priceRange]);
 
   const discoverRandomGem = () => {
+    if (allProducts.length === 0) return;
+    
     setIsDiscovering(true);
-    const randomGem = getRandomProduct('gems');
+    const randomGem = allProducts[Math.floor(Math.random() * allProducts.length)];
     
     setTimeout(() => {
-      if (randomGem) {
-        setDiscoveredGem(randomGem);
-        toast.success(`Discovered: ${randomGem.name}!`);
-      }
+      setDiscoveredGem(randomGem);
+      toast.success(`Discovered: ${randomGem.name}!`);
       setIsDiscovering(false);
     }, 1500);
   };
@@ -60,6 +74,17 @@ const Gems = () => {
     { type: 'Tanzanite', meaning: 'Transformation and insight', color: 'bg-indigo-600' },
     { type: 'Opal', meaning: 'Creativity and imagination', color: 'bg-pink-500' },
   ];
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-purple-900 flex items-center justify-center">
+        <div className="text-center text-white">
+          <Diamond className="w-16 h-16 animate-pulse mx-auto mb-4" />
+          <p className="text-xl font-serif">Loading gems collection...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-purple-900 relative overflow-hidden">
@@ -167,12 +192,12 @@ const Gems = () => {
                 <div className="flex-1 text-center md:text-left">
                   <h4 className="text-xl font-bold mb-2">{discoveredGem.name}</h4>
                   <p className="mb-2">{discoveredGem.description}</p>
-                  {discoveredGem.gemType && (
+                  {discoveredGem.gem_type && (
                     <p className="text-sm opacity-90">
-                      <span className="font-semibold">Gem Type:</span> {discoveredGem.gemType}
+                      <span className="font-semibold">Gem Type:</span> {discoveredGem.gem_type}
                     </p>
                   )}
-                  <p className="text-2xl font-bold mt-3">${discoveredGem.price.toLocaleString()}</p>
+                  <p className="text-2xl font-bold mt-3">₹{discoveredGem.price.toLocaleString()}</p>
                 </div>
               </div>
             </Card>
@@ -228,7 +253,6 @@ const Gems = () => {
               className="group"
             >
               <div className="relative">
-                {/* Rotating circular glow */}
                 <motion.div
                   animate={{ rotate: 360 }}
                   transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
@@ -236,16 +260,22 @@ const Gems = () => {
                 />
                 <ProductCard {...product} index={index} />
               </div>
-              {product.gemType && (
+              {product.gem_type && (
                 <div className="mt-3 text-center">
                   <span className="inline-block px-4 py-2 gems-gradient text-white text-sm font-semibold rounded-full shadow-lg">
-                    {product.gemType}
+                    {product.gem_type}
                   </span>
                 </div>
               )}
             </motion.div>
           ))}
         </div>
+
+        {products.length === 0 && (
+          <div className="text-center py-16 text-white">
+            <p className="text-2xl">No products match your filters</p>
+          </div>
+        )}
       </section>
 
       {/* Footer with Gems Theme */}

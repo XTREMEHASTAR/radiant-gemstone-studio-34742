@@ -1,12 +1,40 @@
 import { motion } from "framer-motion";
-import { getFeaturedProducts } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 export const FeaturedSection = () => {
-  const featuredProducts = getFeaturedProducts();
+  // Fetch featured products from database
+  const { data: featuredProducts = [], isLoading } = useQuery({
+    queryKey: ['products', 'featured'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('featured', true)
+        .limit(4);
+      
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  if (isLoading) {
+    return (
+      <section className="py-20 bg-gradient-to-b from-background to-muted/20">
+        <div className="container mx-auto px-4 text-center">
+          <p className="text-muted-foreground">Loading featured products...</p>
+        </div>
+      </section>
+    );
+  }
+
+  if (featuredProducts.length === 0) {
+    return null;
+  }
 
   return (
     <section className="py-20 bg-gradient-to-b from-background to-muted/20">
@@ -27,7 +55,7 @@ export const FeaturedSection = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {featuredProducts.slice(0, 4).map((product, index) => (
+          {featuredProducts.map((product, index) => (
             <motion.div
               key={product.id}
               initial={{ opacity: 0, y: 30 }}
