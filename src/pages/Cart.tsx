@@ -6,12 +6,13 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { ShoppingBag, Trash2, Plus, Minus, ArrowRight, Lock, Truck, RotateCcw } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { toast } from "sonner";
 import { useState } from "react";
 
 const Cart = () => {
+  const navigate = useNavigate();
   const cart = useCart();
   const items = cart.items;
   const [promoCode, setPromoCode] = useState("");
@@ -35,9 +36,7 @@ const Cart = () => {
   };
 
   const handleCheckout = () => {
-    toast.success("Proceeding to checkout...", {
-      description: "You will be redirected to payment gateway.",
-    });
+    navigate('/checkout');
   };
 
   if (items.length === 0) {

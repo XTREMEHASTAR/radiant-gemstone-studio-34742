@@ -15,6 +15,7 @@ import ProductDetail from "./pages/ProductDetail";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
 import ShippingReturns from "./pages/ShippingReturns";
 import SizeGuide from "./pages/SizeGuide";
 import CareInstructions from "./pages/CareInstructions";
@@ -44,11 +45,12 @@ const App = () => (
               <Route path="/silver" element={<Silver />} />
               <Route path="/diamond" element={<Diamond />} />
               <Route path="/gems" element={<Gems />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/checkout" element={<Checkout />} />
               <Route path="/wishlist" element={<Wishlist />} />
               <Route path="/product/:id" element={<ProductDetail />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
-              <Route path="/cart" element={<Cart />} />
               <Route path="/loyalty" element={<Loyalty />} />
               <Route path="/visual-search" element={<VisualSearchPage />} />
               <Route path="/account" element={<Account />} />
