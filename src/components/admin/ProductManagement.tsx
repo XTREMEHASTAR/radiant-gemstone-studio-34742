@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ProductEditor } from "./ProductEditor";
 import {
   Table,
   TableBody,
@@ -19,6 +20,8 @@ export const ProductManagement = () => {
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [editorOpen, setEditorOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -89,7 +92,10 @@ export const ProductManagement = () => {
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle>Product Management</CardTitle>
-          <Button>
+          <Button onClick={() => {
+            setSelectedProduct(null);
+            setEditorOpen(true);
+          }}>
             <Plus className="w-4 h-4 mr-2" />
             Add Product
           </Button>
@@ -144,7 +150,14 @@ export const ProductManagement = () => {
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
-                      <Button variant="ghost" size="sm">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => {
+                          setSelectedProduct(product);
+                          setEditorOpen(true);
+                        }}
+                      >
                         <Edit className="w-4 h-4" />
                       </Button>
                       <Button
@@ -162,6 +175,13 @@ export const ProductManagement = () => {
           </Table>
         </div>
       </CardContent>
+
+      <ProductEditor
+        product={selectedProduct}
+        open={editorOpen}
+        onOpenChange={setEditorOpen}
+        onSuccess={loadProducts}
+      />
     </Card>
   );
 };

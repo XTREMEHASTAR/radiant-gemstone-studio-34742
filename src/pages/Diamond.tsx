@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import ProductCard from "@/components/ProductCard";
 import { Sparkles, Filter } from "lucide-react";
 import { FilterBar } from "@/components/FilterBar";
+import { OccasionFilter } from "@/components/OccasionFilter";
 import {
   Select,
   SelectContent,
@@ -18,6 +19,7 @@ const Diamond = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("featured");
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 200000]);
+  const [selectedOccasion, setSelectedOccasion] = useState<string | null>(null);
 
   // Fetch products from database
   const { data: baseProducts = [], isLoading } = useQuery({
@@ -42,7 +44,8 @@ const Diamond = () => {
     let filtered = baseProducts.filter(product =>
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
       product.price >= priceRange[0] &&
-      product.price <= priceRange[1]
+      product.price <= priceRange[1] &&
+      (!selectedOccasion || (Array.isArray(product.occasion) && product.occasion.includes(selectedOccasion as any)))
     );
 
     switch (sortBy) {
@@ -55,7 +58,7 @@ const Diamond = () => {
       default:
         return filtered;
     }
-  }, [baseProducts, searchTerm, sortBy, priceRange]);
+  }, [baseProducts, searchTerm, sortBy, priceRange, selectedOccasion]);
 
   const filteredProducts = clarityFilter === 'all'
     ? allProducts
@@ -146,13 +149,20 @@ const Diamond = () => {
 
       {/* Filter Section */}
       <section className="container mx-auto px-4 py-8">
-        <FilterBar
-          onSearchChange={setSearchTerm}
-          onSortChange={setSortBy}
-          onPriceRangeChange={setPriceRange}
-          priceRange={priceRange}
-          maxPrice={maxPrice}
+        <OccasionFilter
+          selectedOccasion={selectedOccasion}
+          onOccasionChange={setSelectedOccasion}
         />
+        
+        <div className="mt-8">
+          <FilterBar
+            onSearchChange={setSearchTerm}
+            onSortChange={setSortBy}
+            onPriceRangeChange={setPriceRange}
+            priceRange={priceRange}
+            maxPrice={maxPrice}
+          />
+        </div>
         
         <div className="glassmorphism p-6 rounded-2xl max-w-md">
           <div className="flex items-center gap-3 mb-3">

@@ -4,6 +4,7 @@ import ProductCard from "@/components/ProductCard";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FilterBar } from "@/components/FilterBar";
+import { OccasionFilter } from "@/components/OccasionFilter";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -12,6 +13,7 @@ const Silver = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("featured");
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 50000]);
+  const [selectedOccasion, setSelectedOccasion] = useState<string | null>(null);
 
   // Fetch products from database
   const { data: allProducts = [], isLoading } = useQuery({
@@ -36,7 +38,8 @@ const Silver = () => {
     let filtered = allProducts.filter(product =>
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
       product.price >= priceRange[0] &&
-      product.price <= priceRange[1]
+      product.price <= priceRange[1] &&
+      (!selectedOccasion || (Array.isArray(product.occasion) && product.occasion.includes(selectedOccasion as any)))
     );
 
     switch (sortBy) {
@@ -49,7 +52,7 @@ const Silver = () => {
       default:
         return filtered;
     }
-  }, [allProducts, searchTerm, sortBy, priceRange]);
+  }, [allProducts, searchTerm, sortBy, priceRange, selectedOccasion]);
 
   const scroll = (direction: 'left' | 'right') => {
     const container = document.getElementById('horizontal-scroll');
@@ -100,13 +103,20 @@ const Silver = () => {
       {/* Horizontal Scrolling Product Cards */}
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <FilterBar
-            onSearchChange={setSearchTerm}
-            onSortChange={setSortBy}
-            onPriceRangeChange={setPriceRange}
-            priceRange={priceRange}
-            maxPrice={maxPrice}
+          <OccasionFilter
+            selectedOccasion={selectedOccasion}
+            onOccasionChange={setSelectedOccasion}
           />
+          
+          <div className="mt-8">
+            <FilterBar
+              onSearchChange={setSearchTerm}
+              onSortChange={setSortBy}
+              onPriceRangeChange={setPriceRange}
+              priceRange={priceRange}
+              maxPrice={maxPrice}
+            />
+          </div>
           
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl font-serif font-bold">Featured Silver Pieces</h2>

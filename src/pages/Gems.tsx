@@ -5,6 +5,7 @@ import { Sparkles, Diamond } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { FilterBar } from "@/components/FilterBar";
+import { OccasionFilter } from "@/components/OccasionFilter";
 import { toast } from "sonner";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -15,6 +16,7 @@ const Gems = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("featured");
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 100000]);
+  const [selectedOccasion, setSelectedOccasion] = useState<string | null>(null);
 
   // Fetch products from database
   const { data: allProducts = [], isLoading } = useQuery({
@@ -39,7 +41,8 @@ const Gems = () => {
     let filtered = allProducts.filter(product =>
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
       product.price >= priceRange[0] &&
-      product.price <= priceRange[1]
+      product.price <= priceRange[1] &&
+      (!selectedOccasion || (Array.isArray(product.occasion) && product.occasion.includes(selectedOccasion as any)))
     );
 
     switch (sortBy) {
@@ -52,7 +55,7 @@ const Gems = () => {
       default:
         return filtered;
     }
-  }, [allProducts, searchTerm, sortBy, priceRange]);
+  }, [allProducts, searchTerm, sortBy, priceRange, selectedOccasion]);
 
   const discoverRandomGem = () => {
     if (allProducts.length === 0) return;
@@ -230,13 +233,20 @@ const Gems = () => {
 
       {/* Circular Product Cards */}
       <section className="container mx-auto px-4 pb-16">
-        <FilterBar
-          onSearchChange={setSearchTerm}
-          onSortChange={setSortBy}
-          onPriceRangeChange={setPriceRange}
-          priceRange={priceRange}
-          maxPrice={maxPrice}
+        <OccasionFilter
+          selectedOccasion={selectedOccasion}
+          onOccasionChange={setSelectedOccasion}
         />
+        
+        <div className="mt-8">
+          <FilterBar
+            onSearchChange={setSearchTerm}
+            onSortChange={setSortBy}
+            onPriceRangeChange={setPriceRange}
+            priceRange={priceRange}
+            maxPrice={maxPrice}
+          />
+        </div>
         
         <h2 className="text-3xl font-serif font-bold text-white text-center mb-12">
           Our Gemstone Collection
