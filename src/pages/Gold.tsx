@@ -5,6 +5,7 @@ import { Sparkles, TrendingUp, Crown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FilterBar } from "@/components/FilterBar";
 import { LiveMetalRates } from "@/components/LiveMetalRates";
+import { OccasionFilter } from "@/components/OccasionFilter";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -13,6 +14,7 @@ const Gold = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("featured");
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 100000]);
+  const [selectedOccasion, setSelectedOccasion] = useState<string | null>(null);
 
   // Fetch products from database
   const { data: allProducts = [], isLoading } = useQuery({
@@ -47,6 +49,13 @@ const Gold = () => {
       filtered = filtered.filter(p =>
         p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         (p.description && p.description.toLowerCase().includes(searchTerm.toLowerCase()))
+      );
+    }
+
+    // Occasion filter
+    if (selectedOccasion) {
+      filtered = filtered.filter(p => 
+        p.occasion && Array.isArray(p.occasion) && p.occasion.includes(selectedOccasion as any)
       );
     }
 
@@ -188,6 +197,14 @@ const Gold = () => {
             </Button>
           </div>
 
+          {/* Occasion Filter */}
+          <div className="mb-8">
+            <OccasionFilter 
+              selectedOccasion={selectedOccasion}
+              onOccasionChange={setSelectedOccasion}
+            />
+          </div>
+
           {/* Filter Bar */}
           <FilterBar
             onSearchChange={setSearchTerm}
@@ -219,6 +236,7 @@ const Gold = () => {
                 setSearchTerm('');
                 setPriceRange([0, maxPrice]);
                 setSortBy('featured');
+                setSelectedOccasion(null);
               }} className="mt-4">
                 Clear Filters
               </Button>

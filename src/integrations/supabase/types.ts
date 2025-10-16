@@ -56,6 +56,155 @@ export type Database = {
         }
         Relationships: []
       }
+      authenticity_certificates: {
+        Row: {
+          blockchain_hash: string | null
+          certificate_number: string
+          certificate_url: string | null
+          created_at: string | null
+          gem_details: Json | null
+          id: string
+          issued_date: string | null
+          metal_weight: number | null
+          nft_token_id: string | null
+          order_item_id: string | null
+          product_id: string | null
+        }
+        Insert: {
+          blockchain_hash?: string | null
+          certificate_number: string
+          certificate_url?: string | null
+          created_at?: string | null
+          gem_details?: Json | null
+          id?: string
+          issued_date?: string | null
+          metal_weight?: number | null
+          nft_token_id?: string | null
+          order_item_id?: string | null
+          product_id?: string | null
+        }
+        Update: {
+          blockchain_hash?: string | null
+          certificate_number?: string
+          certificate_url?: string | null
+          created_at?: string | null
+          gem_details?: Json | null
+          id?: string
+          issued_date?: string | null
+          metal_weight?: number | null
+          nft_token_id?: string | null
+          order_item_id?: string | null
+          product_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "authenticity_certificates_order_item_id_fkey"
+            columns: ["order_item_id"]
+            isOneToOne: false
+            referencedRelation: "order_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "authenticity_certificates_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      blog_posts: {
+        Row: {
+          author_id: string | null
+          category: string | null
+          content: string
+          created_at: string | null
+          excerpt: string | null
+          featured_image: string | null
+          id: string
+          published: boolean | null
+          published_at: string | null
+          slug: string
+          title: string
+          updated_at: string | null
+          views: number | null
+        }
+        Insert: {
+          author_id?: string | null
+          category?: string | null
+          content: string
+          created_at?: string | null
+          excerpt?: string | null
+          featured_image?: string | null
+          id?: string
+          published?: boolean | null
+          published_at?: string | null
+          slug: string
+          title: string
+          updated_at?: string | null
+          views?: number | null
+        }
+        Update: {
+          author_id?: string | null
+          category?: string | null
+          content?: string
+          created_at?: string | null
+          excerpt?: string | null
+          featured_image?: string | null
+          id?: string
+          published?: boolean | null
+          published_at?: string | null
+          slug?: string
+          title?: string
+          updated_at?: string | null
+          views?: number | null
+        }
+        Relationships: []
+      }
+      categories: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          display_order: number | null
+          id: string
+          image: string | null
+          name: string
+          parent_id: string | null
+          slug: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          display_order?: number | null
+          id?: string
+          image?: string | null
+          name: string
+          parent_id?: string | null
+          slug: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          display_order?: number | null
+          id?: string
+          image?: string | null
+          name?: string
+          parent_id?: string | null
+          slug?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "categories_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       discount_codes: {
         Row: {
           code: string
@@ -89,11 +238,102 @@ export type Database = {
         }
         Relationships: []
       }
+      email_campaigns: {
+        Row: {
+          clicked_count: number | null
+          content: string
+          created_at: string | null
+          id: string
+          name: string
+          opened_count: number | null
+          recipients_count: number | null
+          scheduled_at: string | null
+          segment: Json | null
+          sent_at: string | null
+          status: string | null
+          subject: string
+        }
+        Insert: {
+          clicked_count?: number | null
+          content: string
+          created_at?: string | null
+          id?: string
+          name: string
+          opened_count?: number | null
+          recipients_count?: number | null
+          scheduled_at?: string | null
+          segment?: Json | null
+          sent_at?: string | null
+          status?: string | null
+          subject: string
+        }
+        Update: {
+          clicked_count?: number | null
+          content?: string
+          created_at?: string | null
+          id?: string
+          name?: string
+          opened_count?: number | null
+          recipients_count?: number | null
+          scheduled_at?: string | null
+          segment?: Json | null
+          sent_at?: string | null
+          status?: string | null
+          subject?: string
+        }
+        Relationships: []
+      }
+      inventory_history: {
+        Row: {
+          change_type: string
+          created_at: string | null
+          id: string
+          new_stock: number | null
+          previous_stock: number | null
+          product_id: string | null
+          quantity_change: number
+          reason: string | null
+          user_id: string | null
+        }
+        Insert: {
+          change_type: string
+          created_at?: string | null
+          id?: string
+          new_stock?: number | null
+          previous_stock?: number | null
+          product_id?: string | null
+          quantity_change: number
+          reason?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          change_type?: string
+          created_at?: string | null
+          id?: string
+          new_stock?: number | null
+          previous_stock?: number | null
+          product_id?: string | null
+          quantity_change?: number
+          reason?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inventory_history_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       loyalty_points: {
         Row: {
           created_at: string
           id: string
+          lifetime_points: number | null
           points: number
+          referral_code: string | null
           tier: string
           updated_at: string
           user_id: string
@@ -101,7 +341,9 @@ export type Database = {
         Insert: {
           created_at?: string
           id?: string
+          lifetime_points?: number | null
           points?: number
+          referral_code?: string | null
           tier?: string
           updated_at?: string
           user_id: string
@@ -109,7 +351,9 @@ export type Database = {
         Update: {
           created_at?: string
           id?: string
+          lifetime_points?: number | null
           points?: number
+          referral_code?: string | null
           tier?: string
           updated_at?: string
           user_id?: string
@@ -220,53 +464,68 @@ export type Database = {
       }
       orders: {
         Row: {
+          actual_delivery: string | null
           billing_address: Json
           created_at: string
+          delivery_method: string | null
           discount_amount: number
           discount_code: string | null
+          estimated_delivery: string | null
           id: string
           notes: string | null
           order_number: string
+          packaging_type: string | null
           shipping_address: Json
           shipping_amount: number
           status: Database["public"]["Enums"]["order_status"]
           subtotal: number
           tax_amount: number
           total_amount: number
+          tracking_number: string | null
           updated_at: string
           user_id: string
         }
         Insert: {
+          actual_delivery?: string | null
           billing_address: Json
           created_at?: string
+          delivery_method?: string | null
           discount_amount?: number
           discount_code?: string | null
+          estimated_delivery?: string | null
           id?: string
           notes?: string | null
           order_number: string
+          packaging_type?: string | null
           shipping_address: Json
           shipping_amount?: number
           status?: Database["public"]["Enums"]["order_status"]
           subtotal: number
           tax_amount?: number
           total_amount: number
+          tracking_number?: string | null
           updated_at?: string
           user_id: string
         }
         Update: {
+          actual_delivery?: string | null
           billing_address?: Json
           created_at?: string
+          delivery_method?: string | null
           discount_amount?: number
           discount_code?: string | null
+          estimated_delivery?: string | null
           id?: string
           notes?: string | null
           order_number?: string
+          packaging_type?: string | null
           shipping_address?: Json
           shipping_amount?: number
           status?: Database["public"]["Enums"]["order_status"]
           subtotal?: number
           tax_amount?: number
           total_amount?: number
+          tracking_number?: string | null
           updated_at?: string
           user_id?: string
         }
@@ -372,59 +631,97 @@ export type Database = {
       products: {
         Row: {
           badge: string | null
+          care_instructions: string | null
           category: string
+          category_id: string | null
           clarity: string | null
           created_at: string
           description: string | null
           featured: boolean | null
           gem_type: string | null
+          gender: string | null
           id: string
           image: string
           images: string[] | null
+          is_bestseller: boolean | null
+          is_new: boolean | null
           metal_purity: string | null
+          model_3d_url: string | null
           name: string
+          occasion: Database["public"]["Enums"]["occasion_type"][] | null
           price: number
+          sku: string | null
           stock: number | null
+          subcategory: string | null
           updated_at: string
+          video_url: string | null
           weight: number | null
         }
         Insert: {
           badge?: string | null
+          care_instructions?: string | null
           category: string
+          category_id?: string | null
           clarity?: string | null
           created_at?: string
           description?: string | null
           featured?: boolean | null
           gem_type?: string | null
+          gender?: string | null
           id?: string
           image: string
           images?: string[] | null
+          is_bestseller?: boolean | null
+          is_new?: boolean | null
           metal_purity?: string | null
+          model_3d_url?: string | null
           name: string
+          occasion?: Database["public"]["Enums"]["occasion_type"][] | null
           price: number
+          sku?: string | null
           stock?: number | null
+          subcategory?: string | null
           updated_at?: string
+          video_url?: string | null
           weight?: number | null
         }
         Update: {
           badge?: string | null
+          care_instructions?: string | null
           category?: string
+          category_id?: string | null
           clarity?: string | null
           created_at?: string
           description?: string | null
           featured?: boolean | null
           gem_type?: string | null
+          gender?: string | null
           id?: string
           image?: string
           images?: string[] | null
+          is_bestseller?: boolean | null
+          is_new?: boolean | null
           metal_purity?: string | null
+          model_3d_url?: string | null
           name?: string
+          occasion?: Database["public"]["Enums"]["occasion_type"][] | null
           price?: number
+          sku?: string | null
           stock?: number | null
+          subcategory?: string | null
           updated_at?: string
+          video_url?: string | null
           weight?: number | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "products_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
@@ -450,6 +747,30 @@ export type Database = {
           id?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      push_subscriptions: {
+        Row: {
+          created_at: string | null
+          endpoint: string
+          id: string
+          keys: Json
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          endpoint: string
+          id?: string
+          keys: Json
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          endpoint?: string
+          id?: string
+          keys?: Json
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -528,6 +849,36 @@ export type Database = {
           id?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      social_posts: {
+        Row: {
+          created_at: string | null
+          embed_code: string | null
+          featured: boolean | null
+          id: string
+          platform: string
+          post_url: string
+          product_ids: string[] | null
+        }
+        Insert: {
+          created_at?: string | null
+          embed_code?: string | null
+          featured?: boolean | null
+          id?: string
+          platform: string
+          post_url: string
+          product_ids?: string[] | null
+        }
+        Update: {
+          created_at?: string | null
+          embed_code?: string | null
+          featured?: boolean | null
+          id?: string
+          platform?: string
+          post_url?: string
+          product_ids?: string[] | null
         }
         Relationships: []
       }
@@ -627,6 +978,15 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "customer"
+      occasion_type:
+        | "wedding"
+        | "engagement"
+        | "festival"
+        | "daily_wear"
+        | "anniversary"
+        | "birthday"
+        | "party"
+        | "office"
       order_status:
         | "pending"
         | "processing"
@@ -764,6 +1124,16 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "customer"],
+      occasion_type: [
+        "wedding",
+        "engagement",
+        "festival",
+        "daily_wear",
+        "anniversary",
+        "birthday",
+        "party",
+        "office",
+      ],
       order_status: [
         "pending",
         "processing",

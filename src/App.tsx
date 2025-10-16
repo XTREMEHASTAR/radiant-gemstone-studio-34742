@@ -25,6 +25,9 @@ import Layout from "./components/Layout";
 import Loyalty from "./pages/Loyalty";
 import VisualSearchPage from "./pages/VisualSearchPage";
 import Account from "./pages/Account";
+import OrderTracking from "./pages/OrderTracking";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import Blog from "./pages/Blog";
 import { CurrencyProvider } from "./components/MultiCurrency";
 import { PrivacyPolicy } from "./components/PrivacyPolicy";
 import { TermsOfService } from "./components/TermsOfService";
@@ -60,6 +63,9 @@ const App = () => (
               <Route path="/refund-policy" element={<RefundPolicy />} />
               <Route path="/privacy" element={<PrivacyPolicy />} />
               <Route path="/terms" element={<TermsOfService />} />
+              <Route path="/order-tracking/:orderId" element={<OrderTracking />} />
+              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/blog" element={<Blog />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Route>
