@@ -15,6 +15,7 @@ import { ProductManagement } from "@/components/admin/ProductManagement";
 import { OrderManagement } from "@/components/admin/OrderManagement";
 import { CustomerManagement } from "@/components/admin/CustomerManagement";
 import { AnalyticsPanel } from "@/components/admin/AnalyticsPanel";
+import { MetalPriceManagement } from "@/components/admin/MetalPriceManagement";
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({
@@ -160,10 +161,11 @@ export default function AdminDashboard() {
       </div>
 
       <Tabs defaultValue="products" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="products">Products</TabsTrigger>
           <TabsTrigger value="orders">Orders</TabsTrigger>
           <TabsTrigger value="customers">Customers</TabsTrigger>
+          <TabsTrigger value="prices">Metal Prices</TabsTrigger>
           <TabsTrigger value="analytics">Analytics</TabsTrigger>
         </TabsList>
 
@@ -177,6 +179,10 @@ export default function AdminDashboard() {
 
         <TabsContent value="customers">
           <CustomerManagement />
+        </TabsContent>
+
+        <TabsContent value="prices">
+          <MetalPriceManagement />
         </TabsContent>
 
         <TabsContent value="analytics">
