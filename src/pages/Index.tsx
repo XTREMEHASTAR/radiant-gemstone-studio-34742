@@ -11,6 +11,7 @@ import { CategoryShowcase } from "@/components/CategoryShowcase";
 import { FeaturesShowcase } from "@/components/FeaturesShowcase";
 import { LiveMetalRates } from "@/components/LiveMetalRates";
 import { RecentlyViewed } from "@/components/RecentlyViewed";
+import { SocialFeed } from "@/components/SocialFeed";
 
 const Index = () => {
   // Main homepage component
@@ -243,6 +244,9 @@ const Index = () => {
         
         {/* Recently Viewed */}
         <RecentlyViewed />
+        
+        {/* Social Feed */}
+        <SocialFeed />
         
         <Testimonials />
         <Newsletter />

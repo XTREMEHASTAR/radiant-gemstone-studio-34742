@@ -8,6 +8,7 @@ import { CartSheet } from "@/components/CartSheet";
 import { CompareSheet } from "@/components/CompareProducts";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { CurrencySelector } from "@/components/MultiCurrency";
+import { PushNotifications } from "@/components/PushNotifications";
 
 const Navbar = () => {
   const location = useLocation();
@@ -79,6 +80,7 @@ const Navbar = () => {
           {/* Actions */}
           <div className="flex items-center space-x-3">
             <CurrencySelector />
+            <PushNotifications />
             <ThemeToggle />
             <Button variant="ghost" size="icon" className="relative hover:scale-110 transition-transform" asChild>
               <Link to="/wishlist">
@@ -91,8 +93,10 @@ const Navbar = () => {
               </Link>
             </Button>
             <CompareSheet />
-            <Button variant="ghost" size="icon" className="relative hover:scale-110 transition-transform">
-              <User className="h-5 w-5" />
+            <Button variant="ghost" size="icon" className="relative hover:scale-110 transition-transform" asChild>
+              <Link to="/account">
+                <User className="h-5 w-5" />
+              </Link>
             </Button>
             <CartSheet />
 

@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { CreditCard, Building2, Wallet, Truck, MapPin } from "lucide-react";
+import { PaymentMethods } from "@/components/PaymentMethods";
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -190,7 +191,12 @@ const Checkout = () => {
                 Payment Method
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="space-y-6">
+              <div>
+                <h3 className="text-sm font-medium mb-4">Accepted Payment Methods</h3>
+                <PaymentMethods />
+              </div>
+              
               <RadioGroup value={paymentMethod} onValueChange={(value: any) => setPaymentMethod(value)}>
                 <div className="flex items-center space-x-2 p-3 border rounded-lg hover:bg-accent/10 cursor-pointer">
                   <RadioGroupItem value="card" id="card" />
