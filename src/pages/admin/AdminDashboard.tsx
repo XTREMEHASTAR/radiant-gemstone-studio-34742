@@ -34,25 +34,36 @@ export default function AdminDashboard() {
   }, []);
 
   const checkAdminAccess = async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      window.location.href = "/";
-      return;
-    }
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        window.location.href = "/";
+        return;
+      }
 
-    const { data: roles } = await supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", user.id)
-      .eq("role", "admin")
-      .single();
+      const { data: roles, error } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", user.id)
+        .eq("role", "admin")
+        .maybeSingle();
 
-    if (!roles) {
-      toast({
-        title: "Access Denied",
-        description: "You don't have permission to access this page",
-        variant: "destructive",
-      });
+      if (error) {
+        console.error("Error checking admin access:", error);
+      }
+
+      if (!roles) {
+        toast({
+          title: "Access Denied",
+          description: "You don't have permission to access this page. Please contact support to get admin access.",
+          variant: "destructive",
+        });
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 2000);
+      }
+    } catch (error) {
+      console.error("Admin access check failed:", error);
       window.location.href = "/";
     }
   };
